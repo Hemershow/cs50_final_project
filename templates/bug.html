@@ -1,0 +1,78 @@
+{% extends "base.html" %} {% block title %}Bug{% endblock %} {% block content %}
+  
+  <script type="text/javascript">
+    function deletePost(postId) {
+      fetch("/delete-post", {
+        method: "POST",
+        body: JSON.stringify({ postId: postId }),
+      }).then((_res) => {
+        window.location.href = "/";
+      });
+    }
+  </script>
+  {% for post, game in result %}
+  <br />
+  <div>
+    <div class="bug-div break">
+      <div class="image">
+        <img
+          class="cover"
+          src="{{ url_for('static', filename='' + game.image) }}"
+        />
+    </div>
+    
+    <div class="content-bg break">
+      <h1 align="left" class="titles">{{ post.title }}</h1>
+      <h3 class="default-text">{{ post.description }}</h6>
+      <div align="right">
+        <h7 style="color: $dark">@{{post.user_name }} - {{ post.date }}</h7>
+      </div>
+    </div>
+    <br />
+  </div>
+  
+  {% if user.is_authenticated %}
+  
+  {% if user.id == post.user_id %}
+  <div align="right">
+    <h4>Delete post 
+      <button type="button" class="btn btn-primary close" onClick="deletePost({{ post.id }})">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </h4>
+    
+  </div>
+  <br />
+  {% endif %}
+
+  {% endif %}
+  <br />
+  <form method="POST">
+    <div class="form-group">
+      <textarea
+        type="textarea"
+        class="form-control"
+        id="post-comment"
+        name="comment"
+        rows="2"
+        placeholder="..."
+      ></textarea>
+    </div>
+        <div align="right">
+          <button type="submit" class="btn btn-primary">Comment</button>
+        </div>
+  </form>
+  <br />
+
+  {% for comment in post.comments %}
+    <div class="content-bg">
+      <h1>@{{ comment.user_name }}</h1>
+      <h6>{{ comment.data }}</h6>
+      <div align="right">
+        <h7 align="right">{{ comment.date }}</h7> 
+      </div>   
+    </div>
+    <br />
+  {% endfor %}
+  {% endfor %}
+{% endblock %}
