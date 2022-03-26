@@ -1,0 +1,35 @@
+{% extends "base.html" %} {% block title %}My bugs{% endblock %} {% block
+content %}
+<br />
+<div class="content-bg">
+  <h1 align="center" class="titles">My bugs</h1>
+
+  {% for post, game in posts %}
+  <div align="right">
+    <h7 style="color: $dark">@{{ post.user_name }} - {{ post.date }}</h7>
+  </div>
+  <div>
+    <a class="post" href="/bug/{{ post.id }}">
+      <div class="bug-div break">
+        <div class="image">
+          <img
+            class="cover"
+            src="{{ url_for('static', filename='' + game.image) }}"
+          />
+        </div>
+
+        <div class="text">
+          <h4 class="single-line-overflow">{{ game.game_title }}</h4>
+          <h4 class="single-line-overflow">{{ post.title }}</h4>
+          <h6 class="multi-line-overflow">{{ post.description }}</h6>
+        </div>
+      </div>
+      <br />
+    </a>
+  </div>
+
+  {% endfor %}
+
+  <br />
+</div>
+{% endblock %}
